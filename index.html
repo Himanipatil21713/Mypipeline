@@ -1,1 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Click the Box Game</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+        background: #f0f8ff;
+        margin: 0;
+        overflow: hidden;
+    }
+    h1 {
+        color: #333;
+    }
+    #game-area {
+        position: relative;
+        width: 100vw;
+        height: 80vh;
+        background: #dff9fb;
+        border: 2px solid #333;
+        overflow: hidden;
+    }
+    #box {
+        position: absolute;
+        width: 60px;
+        height: 60px;
+        background: #ff6b6b;
+        border-radius: 8px;
+        cursor: pointer;
+    }
+    #score, #time {
+        font-size: 20px;
+        margin: 10px;
+    }
+    button {
+        padding: 10px 20px;
+        font-size: 16px;
+        cursor: pointer;
+        background: #1abc9c;
+        color: white;
+        border: none;
+        border-radius: 5px;
+    }
+    button:hover {
+        background: #16a085;
+    }
+</style>
+</head>
+<body>
+
+<h1>Click the Box Game</h1>
+<div id="score">Score: 0</div>
+<div id="time">Time: 20</div>
+<button onclick="startGame()">Start Game</button>
+<div id="game-area">
+    <div id="box" onclick="increaseScore()"></div>
+</div>
+
+<script>
+let score = 0;
+let timeLeft = 20;
+let gameInterval, boxInterval;
+
+function startGame() {
+    score = 0;
+    timeLeft = 20;
+    document.getElementById("score").innerText = "Score: " + score;
+    document.getElementById("time").innerText = "Time: " + timeLeft;
+    document.getElementById("box").style.display = "block";
+
+    gameInterval = setInterval(() => {
+        timeLeft--;
+        document.getElementById("time").innerText = "Time: " + timeLeft;
+        if (timeLeft <= 0) {
+            endGame();
+        }
+    }, 1000);
+
+    boxInterval = setInterval(moveBox, 800);
+}
+
+function moveBox() {
+    const gameArea = document.getElementById("game-area");
+    const box = document.getElementById("box");
+    let maxX = gameArea.clientWidth - box.clientWidth;
+    let maxY = gameArea.clientHeight - box.clientHeight;
+    let randomX = Math.floor(Math.random() * maxX);
+    let randomY = Math.floor(Math.random() * maxY);
+    box.style.left = randomX + "px";
+    box.style.top = randomY + "px";
+}
+
+function increaseScore() {
+    score++;
+    document.getElementById("score").innerText = "Score: " + score;
+}
+
+function endGame() {
+    clearInterval(gameInterval);
+    clearInterval(boxInterval);
+    document.getElementById("box").style.display = "none";
+    alert("Game Over! Your score is " + score);
+}
+</script>
+
+</body>
+</html>
 
